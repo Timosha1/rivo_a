@@ -1,0 +1,49 @@
+# проверка наличия основных полей (archiveDescription и archiveStrategyRecommendation),
+# в ответе запроса marketplace для архивных стратегий/индексов
+
+
+import requests
+
+url = "https://backend.rivo.xyz/marketplace?userAddress=0xd278A92a2bED505A67987D2d597Afd2AB160bB3a&period=month"
+
+
+def test_marketplace_data():
+    response = requests.get(url)
+    errors = []
+
+    assert response.status_code == 200, f"Ошибка запроса: {response.status_code}"
+    data = response.json()
+
+    # Проверка, что данные являются списком
+    if not isinstance(data, list):
+        errors.append("Response data is not a list")
+
+    required_fields = [
+        "archiveDescription", "archiveStrategyRecommendation"
+    ]
+
+    for index, item in enumerate(data):
+        title = item.get("title", {})
+
+        # Игнорируем все элементы где isArchived false
+        is_archived = title.get("isArchived")
+        if not is_archived:
+            continue
+
+        # Проверка, что все поля из списка required_fields присутствуют и не пусты в объекте title
+        for field in required_fields:
+            # существует ли ключ field в объекте title
+            if field not in title:
+                errors.append(f"Item {index}: Missing field '{field}' in 'title': {title}")
+            else:
+                # проверка, что значение поля не пустое
+                if not title[field]:
+                    errors.append(f"Item {index}: Field '{field}' is empty in 'title': {title}")
+
+    # Если есть ошибки, вывести их
+    if errors:
+        for error in errors:
+            print(error)
+        assert False, "Errors found in test"
+
+
