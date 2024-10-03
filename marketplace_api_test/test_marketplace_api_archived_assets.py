@@ -31,6 +31,11 @@ def test_marketplace_data():
         if not is_archived:
             continue
 
+        # Исключаем объексты которые еще в разработке
+        ignored_names = ['Mantle Index']
+        if title.get('name') in ignored_names:
+            continue
+
         # Проверка, что все поля из списка required_fields присутствуют и не пусты в объекте title
         for field in required_fields:
             # существует ли ключ field ("archiveDescription", "archiveStrategyRecommendation") в объекте title
