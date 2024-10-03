@@ -15,9 +15,19 @@ def test_api_response():
     data = get_api_data()
     errors = []
 
+    ignored_names = ['Mantle Index']
+
     for item in data:
-        if item['title'].get('isIndex', False):
-            item_name = item['title'].get('name', 'Unknown')
+        title = item.get('title')
+
+        # Пропускаем объекты, которые находятся в разработке
+        if title.get('name') in ignored_names:
+            continue
+
+        # Пропускаем не индексы
+        if title.get('isIndex', False):
+            item_name = title.get('name', 'Unknown')
+
 
             # Проверка наличия и непустоты обязательных полей
             required_fields = ['youtubeLink', 'yieldSchemeLogo', 'whyInvestDescr', 'assetsAddrs']
