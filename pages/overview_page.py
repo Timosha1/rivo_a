@@ -19,11 +19,9 @@ class OverviewPage(BasePage):
     def open_overview_page(self):
         self.open("https://app.rivo.xyz")
 
-    def connect_wallet_button(self):
-        return self.find(connect_wallet_selector)
-
-    def connect_wallet_button_is_displayed(self):
-        return self.connect_wallet_button().is_displayed()
+    # По этому примеру надо поправить остальные методы на страницах pom
+    def should_be_connect_wallet_button(self):
+        assert self.is_element_present(connect_wallet_selector), "Connect wallet button is not presented"
 
     def click_connect_wallet_button(self):
         self.connect_wallet_button().click()
