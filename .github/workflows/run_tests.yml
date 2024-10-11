@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: setup Python
         uses: actions/setup-python@v4
         with:
@@ -26,7 +26,7 @@ jobs:
       - name: Install Chrome
         run: sudo apt-get install google-chrome-stable
       - name: install dependencies
-        run: pip install -r requirements
+        run: pip install -r requirements.txt
       - name: first_test
         if: "github.event.inputs.deployment_target == 'first_test'"
         run: pytest marketplace_api_test\test_marketplace_api.py
