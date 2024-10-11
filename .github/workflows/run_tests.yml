@@ -28,9 +28,9 @@ jobs:
       - name: install dependencies
         run: pip install -r requirements
       - name: first_test
-        if: "github.event.inputs.deployment_target == first_test"
+        if: "github.event.inputs.deployment_target == 'first_test'"
         run: pytest marketplace_api_test\test_marketplace_api.py
       - name: second_test
-        if: "github.event.inputs.deployment_target == second_test"
+        if: "github.event.inputs.deployment_target == 'second_test'"
         run: pytest marketplace_api_test\test_marketplace_api_indexes.py
 
